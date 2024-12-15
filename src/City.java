@@ -1,70 +1,138 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class City
 {
-    public char city1;
-    public char city2;
-    public int numberofcities;
-    public char [] labels = new char[numberofcities];
-    public int numberofroutes;
+    public String[] array;
 
 
-    public void cityMap()
+    private String start;
+    private String end;
+    private int cityNumber;
+    private int routeNumber;
+    private String[] cityLabels;
+    private String path;
+
+    public City(String path) throws IOException
     {
-        Scanner info = new Scanner(System.in);
-        System.out.println("Okunacak dosya adi girin");
-        String dosya = info.nextLine();
-        try (BufferedReader okuyucu = new BufferedReader(new FileReader(dosya)))
+        this.path = path;
+        setCityNumber(cityNumber);
+        setRouteNumber(routeNumber);
+        setCityLabels(cityLabels);
+        setEnd(end);
+        setStart(start);
+    }
+
+    public void setCityNumber(int cityNumber) throws IOException
+    {
+        System.out.println();
+        Scanner info = null;
+        try
         {
-            String sonSatir = null;
-            String satir;
-            int lineNumber=0;
-            String importantInfo1=null;
-            String importantInfo2=null;
+            info = new Scanner(Paths.get(path));
+            this.cityNumber = Integer.parseInt(info.nextLine().trim());
+        }
+        catch (Exception wrongPath)
+        {
+            System.err.println("file not found");
+        }
+    }
+    public void setCityLabels(String[] cityLabels)
+    {
+        Scanner info = null;
+        try
+        {
+            info = new Scanner(Paths.get(path));
+            info.nextLine();
+            this.cityLabels = info.nextLine().split(" ");
+        }
+        catch (NullPointerException wrongpoint)
+        {
+            System.err.println("unnamed error occured");
 
-            while ((satir = okuyucu.readLine()) != null)
-            {
-                sonSatir = satir;
-                lineNumber++;
-                if(lineNumber == 1)
-                {
-                    importantInfo1 = satir;
-                }
-                if(lineNumber == 2)
-                {
-                    String newSatir = satir.replace(" ", "");
-                    labels = newSatir.toCharArray();
-                    for(int i= 0;i<newSatir.length();i++)
-                    {
-                        System.out.print(labels[i]+" ");
-                    }
-                }
-                if(lineNumber == 3)
-                {
-                    importantInfo2 = satir;
-                }
-            }
-            if(sonSatir != null)
-            {
-                String whereToWhere = sonSatir.replace(" ", "");
-                city1 = whereToWhere.charAt(0);
-                city2 = whereToWhere.charAt(1);
-            }
-            numberofcities = Integer.parseInt(importantInfo1.trim());
-            numberofroutes = Integer.parseInt(importantInfo2.trim());
-            System.out.println();
-            System.out.println("City no : " + numberofcities);
-            System.out.println("Route no : " + numberofroutes);
-            WayFinder o3 = new WayFinder(city1,city2);
+        } catch (IOException wtf) {
+            System.err.println("unnamed error2 occured");
+            throw new RuntimeException(wtf);
+        }
+    }
 
+    public void setRouteNumber(int routeNumber)
+    {
+        System.out.println();
+        Scanner info = null;
+        try
+        {
+            info = new Scanner(Paths.get(path));
+            info.nextLine();info.nextLine();
+            this.routeNumber = Integer.parseInt(info.nextLine().trim());
+
+        }
+        catch (Exception wrongPath)
+        {
+            System.err.println("file not found");
+        }
+    }
+
+    //yollllar
+
+    public void Location()
+    {
+        Scanner info = null;
+        Scanner infofirst = null;
+        try
+        {
+            info = new Scanner(Paths.get(path));
+            infofirst = new Scanner(Paths.get(path));
+            int count = 0;
+            while (infofirst.hasNextLine())
+            {
+                count++;
+                infofirst.nextLine();
+            }
+            for(int i = 0;i<count-1;i++)
+            {
+                info.nextLine();
+            }
+            array = info.nextLine().split(" ");
+            end = array[1];
+            start = array[0];
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+    }
+    public void setEnd(String end)
+    {
+        this.end = end;
+    }
+    public void setStart(String start)
+    {
+        this.start = start;
+    }
 
+
+
+    public int getCityNumber()
+    {
+        return cityNumber;
+    }
+    public String[] getCityLabels()
+    {
+        return cityLabels;
+    }
+    public int getRouteNumber()
+    {
+        return routeNumber;
+    }
+    public String getStart()
+    {
+        return start;
+    }
+    public String getEnd()
+    {
+        return end;
     }
 }
