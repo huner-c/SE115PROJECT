@@ -48,16 +48,15 @@ public class City
             info.nextLine();
             this.cityLabels = info.nextLine().split(" ");
         }
-        catch (NullPointerException wrongpoint)
+        catch (NullPointerException e1)
         {
             System.err.println("unnamed error occured");
 
-        } catch (IOException wtf) {
+        } catch (IOException e2) {
             System.err.println("unnamed error2 occured");
-            throw new RuntimeException(wtf);
+            throw new RuntimeException(e2);
         }
     }
-
     public void setRouteNumber(int routeNumber)
     {
         System.out.println();

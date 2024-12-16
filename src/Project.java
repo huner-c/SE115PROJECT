@@ -45,25 +45,8 @@ public class Project
         //shortest way finding
 
 
+        WayFinder a3 = new WayFinder(array2, a1.getStart(), a1.getEnd(), a1.getCityNumber(), a1.getCityLabels(),a1.getRouteNumber());
+        a3.shortestRoute(a1.getStart(),a1.getEnd());
 
-
-        int st=0;
-        int ed=0;
-        for(int i = 0 ; i< a1.getCityNumber();i++)
-        {
-            if(a1.getStart().equals(array1[i]))
-            {
-                st = i;
-            }
-//            if(a1.getEnd().equals(array1[i]))
-//            {
-//                ed = i;
-//            }
-        }
-        WayFinder a3 = new WayFinder(array2, a1.getStart(), a1.getEnd());
-        a3.shortestRoute();
-
-        a3.setStartSatir(st);
-        a3.setEndSutun(ed);
     }
 }
