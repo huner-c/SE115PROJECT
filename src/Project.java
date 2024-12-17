@@ -1,52 +1,31 @@
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Project
 {
     public static void main(String[] args) throws IOException
     {
-        Scanner sc = new Scanner(System.in);  //path
-        System.out.println("Path Girin");     //path
-        String path = sc.nextLine();
-        City a1 = new City(path);//objeler
 
 
-        System.out.println("city no: " + a1.getCityNumber());//satir1
+        City a1 = new City();//obje (SEHIR HAKKINDA BILGILER BULUNUR)
+        a1.printCityNo();//1. satir yazdir
+        a1.printCityLabels();//2. satir yazdir
+        String[] cityLabels = a1.getCityLabels();//labellerin tutuldugu dizi
+        a1.printRouteNumber();//3. satiri yazdirir
+        a1.Location(); //son satirdan start ve end i alir
+        a1.printStartAndEnd();//start ve end yazilir
 
-        String[] array1 = a1.getCityLabels();   //satir2
-        for(int i = 0;i< a1.getCityNumber();i++)//satir2
-        {                                       //satir2
-            System.out.print(array1[i]+ " ");   //satir2
-        }                                       //satir2
+        CountryMap a2 = new CountryMap(a1.getCityNumber() , cityLabels , a1.getRouteNumber());//obje (SEHIRDEKI YOLLAR BULUNUR)
+        int[][] arrayOfRoutes = a2.getMainArray();// ROTALAR TUTAN ARRAY
+        a2.printMainArray(a1.getCityNumber()); //ROTALARI YAZDIRAN METHOD
 
-        CountryMap a2 = new CountryMap(a1.getCityNumber() , array1 , a1.getRouteNumber() , path);//objeler
-
-        System.out.println("\nroute no: " + a1.getRouteNumber());//satir3
-
-
-        a1.Location();                               //son satir
-        System.out.println("start: " +a1.getStart());//son satir
-        System.out.println("end: " +a1.getEnd());    //son satir
-
-
-        //BOSS
-
-        int[][] array2 = a2.getMainArray();
-        for(int i = 0; i< a1.getCityNumber();i++)
-        {
-            for(int j = 0;j< a1.getCityNumber();j++)
-            {
-                System.out.print(array2[i][j]+" ");
-            }
-            System.out.println();
-        }
-
-
-        //shortest way finding
-
-
-        WayFinder a3 = new WayFinder(array2, a1.getStart(), a1.getEnd(), a1.getCityNumber(), a1.getCityLabels(),a1.getRouteNumber());
+        WayFinder a3 = new WayFinder(arrayOfRoutes, a1.getStart(), a1.getEnd(), a1.getCityNumber(), a1.getCityLabels(), a1.getRouteNumber());//objeler
         a3.shortestRoute(a1.getStart(),a1.getEnd());
+
+
+        if(a1.getCityLabels().length != a1.getCityNumber())
+        {
+            System.err.println("Error Line 1/2: Number of city labels does not match number of cities");
+        }
 
     }
 }

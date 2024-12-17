@@ -25,29 +25,29 @@ public class WayFinder
         boolean[] visited = new boolean[cityNo];
         int[] previous = new int[cityNo];
 
-        for(int i = 0; i<cityNo; i++)
+        for(int i = 0; i<cityNo; i++) //pre ve distances lere ilk degerler ataniyor
         {
             distances[i] = Integer.MAX_VALUE;
             previous[i] =-1;
         }
-        distances[getCityIndex(startCity)] = 0;
+        distances[getCityIndex(startCity)] = 0;  //A index no 0 distances[0] = 0 a esitlenir
 
         while(true)
         {
             int u = -1;
             for(int i = 0;i<cityNo; i++)
             {
-                if(!visited[i] && (u==-1 || distances[i]<distances[u]))
+                if(!visited[i] && (u==-1 || distances[i]<distances[u]))// hata yok mu ?
                 {
                     u = i;
                 }
-            }
+            } // ilk while  dongusunde for dan u=0 olarak cikar
             if(u == -1 || distances[u] == Integer.MAX_VALUE)
             {
                 break;
             }
             visited[u] = true;
-            for(int v = 0;v<cityNo;v++)
+            for(int v = 0;v<cityNo;v++) // asil dongu
             {
                 if(ways[u][v] > 0 && !visited[v])
                 {
@@ -63,11 +63,11 @@ public class WayFinder
         printShortestPath(distances, previous,getCityIndex(endCity));
     }
 
-    private int  getCityIndex(String city)
+    public int getCityIndex(String city)// girilen city labelin index no bulur mesela start A icin 0 D icin 3
     {
-        for(int i = 0; i<cityLabels.length;i++)
+        for(int i = 0; i<cityLabels.length;i++)//5 kere calisan dongu
         {
-            if(cityLabels[i].equals(city)) return i;
+            if(cityLabels[i].equals(city)) return i; //eger CL[] den bi eleman girilen paramereye esitse index bulundu
         }
         throw new IllegalArgumentException("Invalid city " + city);
     }
