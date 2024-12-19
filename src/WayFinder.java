@@ -1,96 +1,97 @@
-import javax.swing.*;
+import java.io.FileWriter;
+import java.util.Formatter;
 
 public class WayFinder
 {
-    private int [][] ways;
-    private String startCity;
-    private String endCity;
-    private int cityNo;
-    private String[] cityLabels;
-    private int routeNo;
+    private int[][] distances; // Şehirler arası mesafe matrisi
+    private String[] cities;   // Şehirlerin isimleri
 
-    public WayFinder(int[][] ways, String startCity, String endCity, int cityNo, String[] cityLabels, int routeNo)
+    public WayFinder(int[][] distances, String[] cities)
     {
-        this.ways = ways;
-        this.startCity = startCity;
-        this.endCity = endCity;
-        this.cityNo=cityNo;
-        this.cityLabels = cityLabels;
-        this.routeNo=routeNo;
+        this.distances = distances;
+        this.cities = cities;
     }
-
-    public void shortestRoute(String startCity, String endCity)
+    public void findShortestPath(String startCity, String endCity)
     {
-        int[] distances = new int[cityNo];
-        boolean[] visited = new boolean[cityNo];
-        int[] previous = new int[cityNo];
-
-        for(int i = 0; i<cityNo; i++) //pre ve distances lere ilk degerler ataniyor
+        int startIndex = -1; //start city index
+        int endIndex = -1;   //end city index
+        for (int i = 0; i < cities.length; i++) //city labellerin icinden start/end city ye esit olanin indexini bulur
         {
-            distances[i] = Integer.MAX_VALUE;
-            previous[i] =-1;
-        }
-        distances[getCityIndex(startCity)] = 0;  //A index no 0 distances[0] = 0 a esitlenir
-
-        while(true)
-        {
-            int u = -1;
-            for(int i = 0;i<cityNo; i++)
+            if (cities[i].equals(startCity))
             {
-                if(!visited[i] && (u==-1 || distances[i]<distances[u]))// hata yok mu ?
-                {
-                    u = i;
-                }
-            } // ilk while  dongusunde for dan u=0 olarak cikar
-            if(u == -1 || distances[u] == Integer.MAX_VALUE)
-            {
-                break;
+                startIndex = i;
             }
-            visited[u] = true;
-            for(int v = 0;v<cityNo;v++) // asil dongu
+            if (cities[i].equals(endCity))
             {
-                if(ways[u][v] > 0 && !visited[v])
+                endIndex = i;
+            }
+        }
+        if (startIndex == -1 || endIndex == -1) //dongu start/end bulamaz ise hata verecek
+        {
+            //System.err.println("wtf");
+            //return;
+            throw new IllegalArgumentException("Invalid city names: " + startCity + " or " + endCity + " not found!");
+        }
+        int[] totalDistances = new int[cities.length];//Start citymizden diger sehirlere uzakligi tutar
+        boolean[] visited = new boolean[cities.length];//bir den fazla yol kullanacaksak aradaki sehirleri visited yapar
+        for (int i = 0; i < cities.length; i++) //basta hepsi !visited ve uzakliklari max olsun
+        {
+            totalDistances[i] = Integer.MAX_VALUE;
+            visited[i] = false;
+        }
+        totalDistances[startIndex] = 0; //baslangic sehrinin kendine uzakligi 0
+
+
+        for (int step = 0; step < cities.length-1; step++) //-1 cunku baslangic haric method donduren dongu
+        {
+            int currentCity = getClosestCity(totalDistances, visited);
+            visited[currentCity] = true;
+
+            // Komşu şehirlerin mesafelerini güncelle
+            for (int i = 0; i < cities.length; i++)
+            {
+                if (!visited[i] && distances[currentCity][i] > 0 && totalDistances[currentCity] + distances[currentCity][i] < totalDistances[i])
                 {
-                    int alt= distances[u] + ways[u][v];
-                    if(alt < distances[v])
-                    {
-                        distances[v] = alt;
-                        previous[v] = u;
-                    }
+                    totalDistances[i] = totalDistances[currentCity] + distances[currentCity][i];
                 }
             }
         }
-        printShortestPath(distances, previous,getCityIndex(endCity));
+        writeOutputToFile("output.txt","Fastest Way: " + startCity + " --> " + endCity + " \nTotal Time: " + totalDistances[endIndex]+ " min");
     }
-
-    public int getCityIndex(String city)// girilen city labelin index no bulur mesela start A icin 0 D icin 3
+    private int getClosestCity(int[] totalDistances, boolean[] visited)
     {
-        for(int i = 0; i<cityLabels.length;i++)//5 kere calisan dongu
+        int minDistance = Integer.MAX_VALUE; // eger daha kisa yol varsa onu secmek icin
+        int minIndex = -1; // pozitif disinda bisi olmali
+        for (int i = 0; i < totalDistances.length; i++)
         {
-            if(cityLabels[i].equals(city)) return i; //eger CL[] den bi eleman girilen paramereye esitse index bulundu
+            if (!visited[i] && totalDistances[i] < minDistance) //ziyaret edilmediyse ve onceki ziyaretten daha kisa yol var ise degeri degistirir
+            {
+                minDistance = totalDistances[i];
+                minIndex = i;
+            }
         }
-        throw new IllegalArgumentException("Invalid city " + city);
+        return minIndex;
     }
-
-    private void printShortestPath(int[] distances, int[] previous, int endIndex)
+    public void writeOutputToFile(String filename, String content)
     {
-        if(distances[endIndex] == Integer.MAX_VALUE)
+        Formatter formatter = null;
+        FileWriter fileWriter = null;
+        try
         {
-            System.out.println("No Path Found");
-        }
-        else
+            fileWriter = new FileWriter(filename, false); //append false olcak ki her baslatista icindeki silinsin
+            formatter = new Formatter(fileWriter);
+            formatter.format("%s%n", content); //
+            fileWriter.close();
+        } catch (Exception ex)
         {
-            System.out.println("Shortest Path: ");
-            printPath(previous, endIndex);
-            System.out.println("\nDistance: "+distances[endIndex]);
+            System.err.println("Something wen wrong.");
         }
-    }
-    private void printPath(int[] previous, int index)
-    {
-        if(previous[index] != -1)
+        finally
         {
-            printPath(previous, previous[index]);
+            if (formatter != null)
+            {
+                formatter.close();
+            }
         }
-        System.out.println(cityLabels[index] + " ");
     }
 }

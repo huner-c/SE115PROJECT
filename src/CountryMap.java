@@ -1,8 +1,6 @@
-import javax.swing.plaf.synth.SynthOptionPaneUI;
-import javax.xml.transform.Source;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.*;
 
 public class CountryMap
 {
@@ -27,8 +25,9 @@ public class CountryMap
                         {
                             if(currentLine[1].equals(cityLabels[p]))
                             {
-                                mainArray[j][p] = Integer.parseInt(currentLine[2]);  //HER SATIR TEK TEK TARANIR CITY LABELLER TESPIT EDILIR
-                            }                                                        //TESPIT SONRASI SURELER O SATIR VE SUTUNA ESITLENIR
+                                mainArray[j][p] = Integer.parseInt(currentLine[2]);//HER SATIR TEK TEK TARANIR CITY LABELLER TESPIT EDILIR
+                                mainArray[p][j] = Integer.parseInt(currentLine[2]);
+                            }//TESPIT SONRASI SURELER O SATIR VE SUTUNA ESITLENIR
                         }
                     }
                 }
