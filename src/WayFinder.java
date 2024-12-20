@@ -8,6 +8,7 @@ public class WayFinder
 
     public WayFinder(int[][] distances, String[] cities)
     {
+
         this.distances = distances;
         this.cities = cities;
     }
@@ -28,6 +29,7 @@ public class WayFinder
         }
         if (startIndex == -1 || endIndex == -1) //dongu start/end bulamaz ise hata verecek
         {
+            City.logError(City.count ,"Invalid city names: " + startCity + " or " + endCity + " not found!");
             //System.err.println("wtf");
             //return;
             throw new IllegalArgumentException("Invalid city names: " + startCity + " or " + endCity + " not found!");
@@ -56,7 +58,7 @@ public class WayFinder
                 }
             }
         }
-        writeOutputToFile("output.txt","Fastest Way: " + startCity + " --> " + endCity + " \nTotal Time: " + totalDistances[endIndex]+ " min");
+        writeOutputToFile("output.txt","File read is successful!" + "\nFastest Way: " + startCity + " --> " + endCity + " \nTotal Time: " + totalDistances[endIndex]+ " min");
     }
     private int getClosestCity(int[] totalDistances, boolean[] visited)
     {
@@ -84,7 +86,7 @@ public class WayFinder
             fileWriter.close();
         } catch (Exception ex)
         {
-            System.err.println("Something wen wrong.");
+            System.err.println("Something went wrong.");
         }
         finally
         {

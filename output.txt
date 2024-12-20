@@ -1,2 +1,0 @@
-Fastest Way: C --> B 
-Total Time: 40 min

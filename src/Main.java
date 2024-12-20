@@ -1,13 +1,15 @@
 import java.io.IOException;
 
-
-public class Project
+public class Main
 {
     public static void main(String[] args) throws IOException
     {
+        String input = args[0];
+        //String input = "src/map1.txt";
 
 
-        City a1 = new City();//obje (SEHIR HAKKINDA BILGILER BULUNUR)
+
+        City a1 = new City(input);//obje (SEHIR HAKKINDA BILGILER BULUNUR)
         a1.printCityNo();//1. satir yazdir
         a1.printCityLabels();//2. satir yazdir
         String[] cityLabels = a1.getCityLabels();//labellerin tutuldugu dizi
@@ -15,7 +17,7 @@ public class Project
         a1.Location(); //son satirdan start ve end i alir
         a1.printStartAndEnd();//start ve end yazilir
 
-        CountryMap a2 = new CountryMap(a1.getCityNumber() , cityLabels , a1.getRouteNumber());//obje (SEHIRDEKI YOLLAR BULUNUR)
+        CountryMap a2 = new CountryMap(a1.getCityNumber() , cityLabels , a1.getRouteNumber(), input);//obje (SEHIRDEKI YOLLAR BULUNUR)
         int[][] arrayOfRoutes = a2.getMainArray();// ROTALAR TUTAN ARRAY
         a2.printMainArray(a1.getCityNumber()); //ROTALARI YAZDIRAN METHOD
         
