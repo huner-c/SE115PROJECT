@@ -177,6 +177,8 @@ public class City
     {
         return end;
     }
+
+
     public static void logError(int lineNumber, String description)
     {
         try (FileWriter writer = new FileWriter("output.txt", false);

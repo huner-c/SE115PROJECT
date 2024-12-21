@@ -4,10 +4,8 @@ public class Main
 {
     public static void main(String[] args) throws IOException
     {
-        String input = args[0];
-        //String input = "src/map1.txt";
-
-
+        //String input = args[0];
+        String input = "src/map1.txt";
 
         City a1 = new City(input);//obje (SEHIR HAKKINDA BILGILER BULUNUR)
         a1.printCityNo();//1. satir yazdir

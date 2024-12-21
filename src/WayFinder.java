@@ -30,35 +30,61 @@ public class WayFinder
         if (startIndex == -1 || endIndex == -1) //dongu start/end bulamaz ise hata verecek
         {
             City.logError(City.count ,"Invalid city names: " + startCity + " or " + endCity + " not found!");
-            //System.err.println("wtf");
-            //return;
             throw new IllegalArgumentException("Invalid city names: " + startCity + " or " + endCity + " not found!");
         }
+
+
+
+
+        int[] previous = new int[cities.length]; // Şehirlerin geldiği önceki şehir
         int[] totalDistances = new int[cities.length];//Start citymizden diger sehirlere uzakligi tutar
         boolean[] visited = new boolean[cities.length];//bir den fazla yol kullanacaksak aradaki sehirleri visited yapar
         for (int i = 0; i < cities.length; i++) //basta hepsi !visited ve uzakliklari max olsun
         {
             totalDistances[i] = Integer.MAX_VALUE;
             visited[i] = false;
+            previous[i] = -1; // yeni ekledik
         }
         totalDistances[startIndex] = 0; //baslangic sehrinin kendine uzakligi 0
-
 
         for (int step = 0; step < cities.length-1; step++) //-1 cunku baslangic haric method donduren dongu
         {
             int currentCity = getClosestCity(totalDistances, visited);
             visited[currentCity] = true;
 
-            // Komşu şehirlerin mesafelerini güncelle
+            // Komşu şehirlerin mesafelerini güncelle//
             for (int i = 0; i < cities.length; i++)
             {
                 if (!visited[i] && distances[currentCity][i] > 0 && totalDistances[currentCity] + distances[currentCity][i] < totalDistances[i])
                 {
                     totalDistances[i] = totalDistances[currentCity] + distances[currentCity][i];
+                    previous[i] = currentCity; // yeni yazdik
                 }
             }
         }
-        writeOutputToFile("output.txt","File read is successful!" + "\nFastest Way: " + startCity + " --> " + endCity + " \nTotal Time: " + totalDistances[endIndex]+ " min");
+        String [] path = new String[cities.length];
+        int pathIndex = 0;
+
+        for (int at = endIndex; at != -1; at = previous[at]) {
+            path[pathIndex++] = cities[at];
+        }
+
+        // Rota tersine çevrilerek düzenlenir
+        StringBuilder resultPath = new StringBuilder();
+
+        for (int i = pathIndex - 1; i >= 0; i--) {
+            resultPath.append(path[i]);
+            if (i > 0) {
+                resultPath.append(" -> ");
+            }
+        }
+        if(totalDistances[endIndex]==Integer.MAX_VALUE)
+        {
+            writeOutputToFile("output.txt","No Way Found");
+            System.exit(0);
+        }
+        String result = "File read is successful!" + "\nFastest Way: " + resultPath + "\nTotal Time: " + totalDistances[endIndex] + " min";
+        writeOutputToFile("output.txt", result);
     }
     private int getClosestCity(int[] totalDistances, boolean[] visited)
     {

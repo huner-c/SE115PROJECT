@@ -3,8 +3,8 @@ A B C D E
 6
 A B 30
 A C 10
-C D 50
 B D 20
-D E 10
+C D 50
 C E 40
-D A
+D E 10
+B E
