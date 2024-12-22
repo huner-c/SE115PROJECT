@@ -3,7 +3,7 @@ A B C D E
 6
 A B 30
 A C 10
-C D 50
+C D 60
 B D 20
 D E 10
 C E 40

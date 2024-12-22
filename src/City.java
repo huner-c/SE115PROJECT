@@ -61,10 +61,11 @@ public class City
         }
         catch (NumberFormatException wrongNoFormat)
         {
+            System.err.println("Error Line: 1/2 Invalid number of cities");
             logError(1, "Invalid number of cities");
         }
     }
-    public void setCityLabels(String[] cityLabels) throws IOException    //IKINCI SATIR
+    public void setCityLabels(String[] cityLabels)     //IKINCI SATIR
     {
         Scanner info = null;
         try
@@ -75,6 +76,7 @@ public class City
             String[] test2 = test.split(" ");
             if(test2.length != cityNumber)
             {
+                System.err.println("Error Line: 1/2 Number of city labels does not match city count");
                 logError(2, "Number of city labels does not match city count");
             }
             int labelno1 = test.length();
@@ -85,16 +87,18 @@ public class City
             }
             else
             {
+                System.err.println("Error Line: 2 Expecting ONE space between labels");
                 logError(2, "Expecting ONE space between labels");
             }
         }
         catch (Exception WrongLabelsFormat)
         {
+
             logError(2, "Error reading city labels");
         }
 
     }
-    public void setRouteNumber(int routeNumber) throws IOException  //3. SATIR
+    public void setRouteNumber(int routeNumber)   //3. SATIR
     {
 
         System.out.println();
@@ -107,10 +111,11 @@ public class City
         }
         catch (Exception wrongFormatRoute)
         {
+            System.err.println("Error Line: 3 Invalid number of routes");
             logError(3, "Invalid number of routes");
+
         }
     }
-
     public void Location() throws IOException //SON SATIR
     {
         Scanner info = null;
@@ -133,20 +138,20 @@ public class City
             if(array.length != 2)
             {
                 logError(count, "Expecting ONE space between start and end labels");
-                System.exit(0);
+
             }
-            start = array[0];
-            end = array[1];
+            setStart(array[0]);
+            setEnd(array[1]);
         }
         catch (Exception wrongStartandEndCities)
         {
-            logError(5, "Error reading start and end cities");
+            System.err.println("Error Line: " +count+  " Error reading start and end cities");
+            logError(count, "Error reading start and end cities");
         }
-
         if((count-4) != routeNumber)
         {
             logError(3, "Invalid Route Number");
-            throw new IOException("Invalid Route Number");
+            throw new IOException("Error Line: 3 Invalid Route Number");
         }
     }
     public void setEnd(String end) //SON SATIR

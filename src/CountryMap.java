@@ -1,4 +1,4 @@
-import java.io.IOException;
+
 import java.nio.file.Paths;
 import java.util.Scanner;
 
@@ -23,7 +23,8 @@ public class CountryMap
                 if(currentLine.length != 3)
                 {
                     City.logError(i+4, "Expecting ONE space between labels and times");
-                    System.exit(0);
+                    System.err.println("Error Line: "+(i+4)+ " Expecting ONE space between labels and times");
+                    return;
                 }
                 currentLineNumber++;
                 for(int j = 0;j<cityNo;j++) //0A 1B 2C 3D 4E   5 KERE CALISACAK //
@@ -35,9 +36,8 @@ public class CountryMap
                             if(currentLine[1].equals(cityLabels[p]))
                             {
                                 mainArray[j][p] = Integer.parseInt(currentLine[2]);//HER SATIR TEK TEK TARANIR CITY LABELLER TESPIT EDILIR
-                                mainArray[p][j] = Integer.parseInt(currentLine[2]);
-
-                            }//TESPIT SONRASI SURELER O SATIR VE SUTUNA ESITLENIR
+                                mainArray[p][j] = Integer.parseInt(currentLine[2]);//TESPIT SONRASI SURELER O SATIR VE SUTUNA ESITLENIR
+                            }
                         }
                     }
                 }
@@ -46,7 +46,7 @@ public class CountryMap
         catch (Exception otherLinesError)
         {
             City.logError(currentLineNumber ,"Integer Time Expected");
-            System.err.println("an error occured while reading other lines");
+            System.err.println("Error Line: " + currentLineNumber + " Integer Time Expected");
             System.exit(0);
         }
     }

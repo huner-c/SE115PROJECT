@@ -16,7 +16,6 @@ public class Main
         a1.printStartAndEnd();//start ve end yazilir
 
         CountryMap a2 = new CountryMap(a1.getCityNumber() , cityLabels , a1.getRouteNumber(), input);//obje (SEHIRDEKI YOLLAR BULUNUR)
-        int[][] arrayOfRoutes = a2.getMainArray();// ROTALAR TUTAN ARRAY
         a2.printMainArray(a1.getCityNumber()); //ROTALARI YAZDIRAN METHOD
         
         WayFinder a3 = new WayFinder(a2.getMainArray(), a1.getCityLabels());
