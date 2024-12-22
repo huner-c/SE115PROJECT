@@ -24,8 +24,14 @@ public class City
         setEnd(end);
         setStart(start);
     }
-    public void printCityNo()
-    {
+    public void printCityNo() throws IOException {
+        setCityNumber(0);
+        if(cityNumber == 0)
+        {
+            logError(1,"Wrong Format");
+            System.err.println("Error Line: 1 City Number cannot be 0 or empty");
+            return;
+        }
         System.out.println("Number of Cities: " + cityNumber);
         System.out.println();
     }
@@ -36,11 +42,15 @@ public class City
         {
             System.out.print(cityLabels[i]+ " ");
         }
-        System.out.println();
     }
-
     public void printRouteNumber()
     {
+        setRouteNumber(0);
+        if(routeNumber == 0)
+        {
+            System.err.println("Error Line: 3 Route Number cannot be 0 or empty");
+            return;
+        }
         System.out.println();
         System.out.println("Number of Routes: " + routeNumber);
         System.out.println();
@@ -57,12 +67,13 @@ public class City
         try
         {
             info = new Scanner(Paths.get(path));
-            this.cityNumber = Integer.parseInt(info.nextLine().trim());
+            int line = Integer.parseInt(info.nextLine().trim());
+            this.cityNumber = line;
         }
         catch (NumberFormatException wrongNoFormat)
         {
-            System.err.println("Error Line: 1/2 Invalid number of cities");
-            logError(1, "Invalid number of cities");
+            logError(1, "City Number must be integer");
+            System.err.println("Error Line: 1 City Number must be integer");
         }
     }
     public void setCityLabels(String[] cityLabels)     //IKINCI SATIR
@@ -72,12 +83,22 @@ public class City
         {
             info = new Scanner(Paths.get(path));
             info.nextLine();
-            String test = info.nextLine();//"A B C D E"
-            String[] test2 = test.split(" ");
+            String test = info.nextLine();//"A B C D E" length 9
+            String[] test2 = test.split(" "); //[A],[B] ... length 5
+            if(test2.length*2-1 != test.length())
+            {
+                System.err.println("Error Line: 2 Expecting ONE space between city labels");
+            }
+            if(test.isEmpty())
+            {
+                System.err.println("Error Line: 2 No City Label Found");
+                return;
+            }
             if(test2.length != cityNumber)
             {
-                System.err.println("Error Line: 1/2 Number of city labels does not match city count");
+                System.err.println("Error Line: 2 Number of city labels does not match city count");
                 logError(2, "Number of city labels does not match city count");
+                return;
             }
             int labelno1 = test.length();
             int labelno2 = test2.length;
@@ -87,8 +108,8 @@ public class City
             }
             else
             {
-                System.err.println("Error Line: 2 Expecting ONE space between labels");
                 logError(2, "Expecting ONE space between labels");
+                System.err.println("Error Line: 2 Expecting ONE space between labels");
             }
         }
         catch (Exception WrongLabelsFormat)
@@ -100,7 +121,6 @@ public class City
     }
     public void setRouteNumber(int routeNumber)   //3. SATIR
     {
-
         System.out.println();
         Scanner info = null;
         try
@@ -111,9 +131,8 @@ public class City
         }
         catch (Exception wrongFormatRoute)
         {
-            System.err.println("Error Line: 3 Invalid number of routes");
-            logError(3, "Invalid number of routes");
-
+            System.err.println("Error Line: 3 Integer number of route expected");
+            logError(3, "Integer number of route expected");
         }
     }
     public void Location() throws IOException //SON SATIR
@@ -137,9 +156,15 @@ public class City
             array = info.nextLine().split(" ");
             if(array.length != 2)
             {
-                logError(count, "Expecting ONE space between start and end labels");
-
+                logError(count, " Expecting ONE space between start and end labels");
+                System.err.println("Error Line: " +count+ " Expecting ONE space between start and end labels");
             }
+            if(array.length > 2)
+            {
+                logError(count, " Only ONE Start and End city Allowed");
+                System.err.println("Error Line: " +count+ " Only ONE Start and End city Allowed");
+            }
+
             setStart(array[0]);
             setEnd(array[1]);
         }
@@ -150,8 +175,8 @@ public class City
         }
         if((count-4) != routeNumber)
         {
-            logError(3, "Invalid Route Number");
-            throw new IOException("Error Line: 3 Invalid Route Number");
+            logError(3, "Route number does not match");
+            throw new IOException("Error Line: 3 Route number does not match ");
         }
     }
     public void setEnd(String end) //SON SATIR

@@ -7,4 +7,4 @@ C D 60
 B D 20
 D E 10
 C E 40
-D A
+D E

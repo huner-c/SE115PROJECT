@@ -19,11 +19,22 @@ public class CountryMap
             info.nextLine();info.nextLine();info.nextLine(); //3 satir atladik
             for(int i = 0;i<routeNo;i++) //0 1 2 3 4 5 dongu 6 kere calisir  BU DONGUNUN AMACI 6 SATIR ASAGI INMEKTIR
             {
-                String[] currentLine = info.nextLine().split(" ");//A,B,30 i her arttiginda bir alttaki satira gecer o satir []currentLine olr
+                String currentLine0 = info.nextLine();
+                String[] currentLine = currentLine0.split(" ");//A,B,30 i her arttiginda bir alttaki satira gecer o satir []currentLine olr
+                if(currentLine0.isEmpty())
+                {
+                    System.err.println("Error Line: "+(i+4)+ " Routes Line Cannot be empty");
+                    return;
+                }
                 if(currentLine.length != 3)
                 {
-                    City.logError(i+4, "Expecting ONE space between labels and times");
+                    City.logError(i+4, " Expecting ONE space between labels and times");
                     System.err.println("Error Line: "+(i+4)+ " Expecting ONE space between labels and times");
+                    if(currentLine.length > 3)
+                    {
+                        City.logError(i+4, " Only ONE start-end and time allowed");
+                        System.err.println("Error Line: "+(i+4)+ " Only ONE start-end and time allowed");
+                    }
                     return;
                 }
                 currentLineNumber++;
@@ -47,7 +58,7 @@ public class CountryMap
         {
             City.logError(currentLineNumber ,"Integer Time Expected");
             System.err.println("Error Line: " + currentLineNumber + " Integer Time Expected");
-            System.exit(0);
+            return;
         }
     }
     public void printMainArray(int cityNo)

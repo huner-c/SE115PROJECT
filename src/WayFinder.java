@@ -75,8 +75,9 @@ public class WayFinder
             System.err.println("No Way Found");
             return;
         }
-        String result = "File read is successful" + "\nFastest Way: " + resultPath + "\nTotal Time: " + totalDistances[endIndex] + " min";
-        writeOutputToFile("output.txt", result);
+        System.out.println("File read is successful");
+        String result = "File read is successful"+"\nFastest Way: "+resultPath+"\nTotal Time:"+ totalDistances[endIndex]+" min";
+        writeOutputToFile("output.txt",result);
     }
     public int getClosestCity(int[] totalDistances, boolean[] visited)
     {
@@ -84,7 +85,7 @@ public class WayFinder
         int minIndex = -1; // pozitif ve 0 disinda bisi olmali
         for (int i = 0; i < totalDistances.length; i++)
         {
-            if (!visited[i] && totalDistances[i] < minDistance) //ziyaret edilmediyse ve onceki ziyaretten daha kisa yol var ise degeri degistirir
+            if (!visited[i] && totalDistances[i]<minDistance) //ziyaret edilmediyse ve onceki ziyaretten daha kisa yol var ise degeri degistirir
             {
                 minDistance = totalDistances[i];
                 minIndex = i;
@@ -92,15 +93,15 @@ public class WayFinder
         }
         return minIndex;
     }
-    public void writeOutputToFile(String filename, String content)
+    public void writeOutputToFile(String filename,String content)
     {
         Formatter formatter = null;
         FileWriter fileWriter = null;
         try
         {
-            fileWriter = new FileWriter(filename, false); //append false olcak ki her baslatista icindeki silinsin
+            fileWriter = new FileWriter(filename,false); //append false olcak ki her baslatista icindeki silinsin
             formatter = new Formatter(fileWriter);
-            formatter.format("%s%n", content); //
+            formatter.format("%s%n",content); //
             fileWriter.close();
         } catch (Exception ex)
         {
